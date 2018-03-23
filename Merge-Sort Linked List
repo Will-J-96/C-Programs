@@ -1,0 +1,226 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+	int value;
+	//string word;
+	//double num;
+	Node *next;
+	Node *prev;
+	};
+class List {
+	protected:
+		Node *head;
+		Node *currPos;
+		Node *tail;
+	public:
+		int length;
+		List() {
+			head = 0;
+			length = 0;
+			currPos = 0;
+			tail = 0;
+			};
+		void append(List *list, Node *newNode) {
+			if (list->head == 0) {		//list is empty
+				list->head = newNode;
+				list->tail = newNode;
+				list->head->prev = 0;
+				list->tail->next = 0;
+				}
+			else {
+				newNode->next = list->tail->next;
+				list->tail->next = newNode;
+				newNode->prev = list->tail;
+				list->tail = newNode;
+				}
+			list->length++;
+			};
+		void prepend(List *list, Node *newNode) {
+			if (list->head == 0) { // List empty
+				list->head = newNode;
+				list->tail = newNode;
+				list->head->prev = 0;
+				list->tail->next = 0;
+				}
+			else {
+				newNode->prev = list->head->prev;
+				newNode->next = list->head;
+				list->head->prev = newNode;
+				list->head = newNode;
+				}
+			list->length++;
+			};
+		void insertAfter(List *list, Node *currNode, Node *newNode) {
+			if (list->head == 0) { // List empty
+				list->head = newNode;
+				list->tail = newNode;
+				}
+			else if (currNode == list->tail) { // Insert after tail
+				list->tail->next = newNode;
+				newNode->prev = list->tail;
+				list->tail = newNode;
+				}
+			else {
+				Node *sucNode = currNode->next;
+				newNode->next = sucNode;
+				newNode->prev = currNode;
+				currNode->next = newNode;
+				sucNode->prev = newNode;
+				}
+			};
+		void remove(List *list, Node *currPos) {
+			currPos = head;
+			Node *sucNode = currPos->next;
+			Node *predNode = currPos->prev;
+			if (sucNode != NULL) {
+				sucNode->prev = predNode;
+				}
+			if (predNode != NULL) {
+				predNode->next = sucNode;
+				}
+			if (currPos == list->head) { // Removed head
+				list->head = sucNode;
+				}
+			if (currPos == list->tail) { // Removed tail
+				list->tail = predNode;
+				}
+			list->length--;
+			};
+		void PeekNode(List *list) {
+			// Output value at head
+			cout << list->head->value << endl;
+			};
+		void printList(List *list) {
+			list->currPos = list->head; // Start at head
+			cout << list->currPos->value << ", ";
+			list->currPos = list->currPos->next;
+			while (list->currPos->next != 0) {	//prints value
+				cout << list->currPos->value << ", ";
+				list->currPos = list->currPos->next;
+				}
+			cout << list->currPos->value;
+			}
+		void Merge(List *list, int i, int j, int k) {
+			Node *leftNode= new Node;
+			Node *rightNode = new Node;
+			Node *mergeNode = new Node;
+			int mergedSize = k - i;					   // Size of merged partition
+			int mergePos = 0;                          // Position to insert merged number
+			int leftPos = 0;                           // Position of elements in left partition
+			int rightPos = 0;                          // Position of elements in right partition
+			List *mergedNumbers = new List;			    
+			leftNode = list->head;		//initialize both nodes to point to head of List_1
+			rightNode = list->head;									   
+			leftPos = i;                               // Initialize left partition position
+			
+			//sets leftNode = beginning of left half
+			for (int x = 0; x < leftPos; x++) {
+				leftNode = leftNode->next;
+				}
+			rightPos = j + 1;    // Initialize right partition position
+				
+			//sets rightNode = right half	
+			for (int x = 0; x < rightPos; x++){
+				rightNode = rightNode->next;	
+				}	 
+
+			// Add smallest element from left or right partition to merged numbers
+			while (leftPos <= j && rightPos <= k) {		//while leftPos pints to the left half & rightPos is still in range
+				if (leftNode->value < rightNode->value) {			//find which number is smaller (if # on left is < # on right)
+					mergeNode = leftNode;					
+					mergedNumbers->append(mergedNumbers, mergeNode);	//store # on left first
+					leftNode = leftNode->next;		//leftNode++
+					}
+				else {												//if # on right is < # on left
+					mergeNode = rightNode;
+					mergedNumbers->append(mergedNumbers, mergeNode);	//store # on right first
+					rightNode = rightNode->next;	//rightPos++
+					}
+				mergeNode = mergeNode;	//mergePos++
+				}
+
+			// If left partition is not empty, add remaining elements to merged numbers
+			while (leftNode->value <= j) {
+				mergeNode = leftNode;
+				mergedNumbers->append(mergedNumbers, mergeNode);
+				leftNode = leftNode->next;	 //leftPos++;
+				mergeNode = mergeNode->next; //mergePos++;
+				}
+
+			// If right partition is not empty, add remaining elements to merged numbers
+			while (rightNode->value <= k) {
+				mergeNode = rightNode;
+				mergedNumbers->append(mergedNumbers, mergeNode);
+				rightNode = rightNode->next;	//rightPos++;
+				mergeNode = mergeNode->next;	//mergePos++;
+				}
+
+			// Copy merge number back to numbers
+			mergeNode = mergedNumbers->head;		//sets mergeNode to the beginning of the mergedNumbers list
+			leftNode = list->head;					//sets leftNode to the beginning of the List_1
+			int temp = 0; 
+			for (mergePos = 0; mergePos < mergedSize; ++mergePos) {
+				if (temp < mergePos) {
+					leftNode = leftNode->next;		//sets leftNode as the index for nodes in List_1
+					}
+				leftNode->value = mergeNode->value;		//numbers[i + mergePos] = mergedNumbers[mergePos];
+				mergeNode = mergeNode->next;
+				}
+			}
+		void MergeSort(List *list, int i, int k) {
+			list->currPos = list->head;		//curPos points to beginning of list
+			int j = 0;		
+			if (i < k) {//while you're not at the end of the list
+				j = (i + k) / 2;    // Find the midpoint in the partition
+				for (int i = 0; i < j; i++) {				//sets currPos to the new midpoint
+					list->currPos = list->currPos->next;	//move through list to find middle node
+					}
+			
+				// Recursively sort left and right partitions
+				MergeSort(list, i, j);
+				MergeSort(list, j + 1, k);
+
+				// Merge left and right partition in sorted order
+				Merge(list, i, j, k);
+				}
+			}
+	};
+int main() {
+	List *List_1 = new List;
+	//int numbers[] = { 10, 2, 78, 4, 45, 32, 7, 11 };
+	Node *Node_1 = new Node;
+		Node_1->value = 10;
+	Node *Node_2 = new Node;
+		Node_2->value = 2;
+	Node *Node_3 = new Node;
+		Node_3->value = 78;
+	Node *Node_4 = new Node;
+		Node_4->value = 4;
+	Node *Node_5 = new Node;
+		Node_5->value = 45;
+	Node *Node_6 = new Node;
+		Node_6->value = 32;
+	Node *Node_7 = new Node;
+		Node_7->value = 7;
+	Node *Node_8 = new Node;
+		Node_8->value = 11;
+	List_1->append(List_1, Node_1);
+	List_1->append(List_1, Node_2);
+	List_1->append(List_1, Node_3);
+	List_1->append(List_1, Node_4);
+	List_1->append(List_1, Node_5);
+	List_1->append(List_1, Node_6);
+	List_1->append(List_1, Node_7);
+	List_1->append(List_1, Node_8);
+	const int List_Size = 8;
+	int i = 0;							
+	cout << "UNSORTED: ";
+		List_1->printList(List_1);
+		cout << endl;
+	List_1->MergeSort(List_1, 0, List_Size);
+	cout << "SORTED: ";
+		List_1->printList(List_1);
+		cout << endl;
+	return 0;
+	}
