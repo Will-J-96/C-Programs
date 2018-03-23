@@ -1,0 +1,77 @@
+#include "stdafx.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+    ifstream myfile;                //declares variable for input file
+    string student_num = "@02723036";
+    int num_of_labs, quizzes, tests, headaches;   //variables to store values read from file
+    string x1 = "                ***                  ***";
+    string x2 = "               *****                *****";
+    string x3 = "               *****                *****";
+    string x4 = "                ***                  ***";
+    string x5 = "     ***                                            ***";
+    string x6 = "      ***                                          ***";
+    string x7 = "       ***                                        ***";
+    string x8 = "       ***                                      ***";
+    string x9 = "         ***                                  ***";
+    string x10 = "           ***                              ***";
+    string x11 = "             ***                          ***";
+    string x12 = "                 **********************";
+    string x13 = "                    ****************";
+
+
+    myfile.open("input1.txt");                  //opens input file
+    if (!myfile.is_open())
+    {
+        cout << "Could not open file input1.txt" << endl;
+        return 1;
+    }
+    myfile >> num_of_labs;
+    myfile >> quizzes;
+    myfile >> tests;
+    myfile >> headaches;
+    myfile.close();                 //closes input file
+
+    ofstream myoutput;              //declares varibale for output file
+    myoutput.open("a.out");         //opens output file
+    if (!myoutput.is_open())
+    {
+        cout << "Could not open file a.out" << endl;
+        return 1;
+    }
+    myoutput << "My name is William Johnson" << endl;                                           //writes to output file
+    myoutput << "Student Number: " << student_num << endl;
+    myoutput << "This semester I will code " << num_of_labs << " labs." << endl;
+    myoutput << "Take " << quizzes << " quizzes." << endl;
+    myoutput << "Take " << tests << " tests." << endl;
+    myoutput << "And cause " << headaches << " headaches!" << endl;
+    myoutput << "I enjoy CSCI 136 so much, I decided to write a program about it!" << endl;
+    myoutput << x1 << endl << x2 << endl << x3 << endl << x4 << endl << x5 << endl << x6 << endl;
+    myoutput << x7 << endl << x8 << endl << x9 << endl << x9 << endl << x10 << endl << x11 << endl;
+    myoutput << x12 << endl << x13 << endl;
+    myoutput.close();        //closes output file
+
+
+    cout << "My name is William Johnson" << endl;                                          //write to console window
+    cout << "Student Number: " << student_num << endl;
+    cout << "This semester I will code " << num_of_labs << " labs." << endl;
+    cout << "Take " << quizzes << " quizzes." << endl;
+    cout << "Take " << tests << " tests." << endl;
+    cout << "And cause " << headaches << " headaches!" << endl;
+    cout << "I enjoy CSCI 136 so much, I decided to write a program about it!" << endl<<endl<<endl;
+    cout << x1 << endl << x2 << endl << x3 << endl << x4 << endl << x5 << endl << x6 << endl;
+    cout << x7 << endl << x8 << endl << x9 << endl << x9 << endl << x10 << endl << x11 << endl;
+    cout << x12 << endl << x13 << endl;
+
+
+
+
+
+    return 0;
+}
+
