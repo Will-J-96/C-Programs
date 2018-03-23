@@ -1,0 +1,66 @@
+#include <iomanip>
+#include <iostream>
+using namespace std;
+//matrix[rows][columns]
+
+
+int main() {
+	int matrix1[4][2] = { { 3,4 },{ 2,3 },{ 1,5 },{ 0,2 } };
+	int matrix2[2][3] = { {5, 4, 4}, {0, 2, 3} };
+	int matrix3[4][3] = { {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0} }; //holds answer
+
+	cout << "Welcome to my matrix multiplication program!" << endl;
+	cout << "Let's begin..."<<endl;
+	cout << "_______________________________________________________________________________________________________________________________________";
+	
+	//prints matrix 1
+	cout << endl <<endl<< "Matrix 1: " << endl;
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 2; ++j)
+		{
+			cout << setw(4) << matrix1[i][j];
+			if (j == 1) {		//reaches end of row, starts to print row
+				cout << endl;
+			}
+		}
+	}
+
+	//prints matrix 2
+	cout << endl << "Matrix 2: " << endl;
+	for (int i = 0; i < 2; ++i) {
+		for (int j = 0; j < 3; ++j)
+		{
+			cout << setw(3) << matrix2[i][j];
+			if (j == 2) {
+				cout << endl;
+			}
+		}
+	}
+
+	//performs multiplication
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 3; j++) {
+			for (int k = 0; k < 2; k++)
+			{
+				matrix3[i][j] += matrix1[i][k] * matrix2[k][j];
+			}
+		}
+	}
+
+	cout <<endl<< "We are performing the multiplication of the two matrices above. The resulting matrix is shown below:" << endl;
+
+	//prints the resulting matrix, matrix 3
+	cout << endl << "Matrix 3: " << endl;
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 3; ++j)
+		{
+			cout << setw(4)<<matrix3[i][j];
+			if (j == 2) {
+				cout << endl;
+			}
+		}
+	}
+
+	cout <<endl<< "Thank you!" << endl << "Side note: I still cannot access Sails. When I try to login, my browser shows: 'Error: Internal script failure'";
+	return 0;
+}
