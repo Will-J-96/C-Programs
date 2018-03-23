@@ -1,0 +1,254 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+struct FLIGHT {
+	int flightNum;
+	string destination;
+	};
+struct NODE {
+	FLIGHT *flight = new FLIGHT();
+	NODE *next;
+	NODE *prev;
+	};
+class List {
+	NODE *head;
+	NODE *currPos;
+	NODE *tail;
+	public:
+		int length;
+		List() {
+			head = 0;
+			length = 0;
+			currPos = 0;
+			tail = 0;
+			}
+		void append(List *list, NODE *newNode) {
+			if (list->head == 0) { // List empty
+								   //list->printList(list);
+				list->head = newNode;
+				list->tail = newNode;
+				list->head->prev = 0;
+				list->tail->next = 0;
+				//list->printList(list);
+				}
+			else {
+				newNode->next = list->tail->next;
+				list->tail->next = newNode;
+				newNode->prev = list->tail;
+				list->tail = newNode;
+				}
+			list->length++;
+			};
+		void prepend(List *list, NODE *newNode) {
+			if (list->head == 0) { // List empty
+				list->head = newNode;
+				list->tail = newNode;
+				}
+			else {
+				newNode->next = list->head;
+				list->head->prev = newNode;
+				list->head = newNode;
+				}
+			list->length++;
+			};
+		void insertAfter(List *list, NODE *currNode, NODE *newNode) {
+			if (list->head == 0) { // List empty
+				list->head = newNode;
+				list->tail = newNode;
+				}
+			else if (currNode == list->tail) { // Insert after tail
+				list->tail->next = newNode;
+				newNode->prev = list->tail;
+				list->tail = newNode;
+				}
+			else {
+				NODE *sucNode = currNode->next;
+				newNode->next = sucNode;
+				newNode->prev = currNode;
+				currNode->next = newNode;
+				sucNode->prev = newNode;
+				}
+			};
+		void remove(List *list, NODE *currPos) {
+			NODE *sucNode = currPos->next;
+			NODE *predNode = currPos->prev;
+			if (sucNode != NULL) {
+				sucNode->prev = predNode;
+				}
+			if (predNode != NULL) {
+				predNode->next = sucNode;
+				}
+			if (currPos == list->head) { // Removed head
+				list->head = sucNode;
+				}
+			if (currPos == list->tail) { // Removed tail
+				list->tail = predNode;
+				}
+			list->length--;
+			};
+		void printList(List *list) {
+			list->currPos = list->head; // Start at head
+			cout << "Flight Records for HowardAir Flight " << currPos->flight->flightNum << '\n';
+			int count = 1;
+			while (list->currPos->next != 0) {
+				cout << count << ".   " << currPos->flight->destination << " to " << currPos->next->flight->destination << "\n";
+				//cout << currPos->flight->destination << '\n' << currPos->next->flight->destination << "\n\n";
+				currPos = currPos->next;
+				//cout << currPos->next << '\n';
+				count++;
+			}
+			cout << "\n";
+		};
+	};
+void printGateInfo(List *list1, List *list2, List *list3, List *list4, List *list5) {
+	cout << "******************************\n";
+	cout << "    Gate 56 Flight Records\n";
+	cout << "******************************\n\n";
+	//prints lists
+	list1->printList(list1);
+	list2->printList(list2);
+	list3->printList(list3);
+	list4->printList(list4);
+	list5->printList(list5);
+	};
+int main() {
+	List *list1 = new List;		//Flight 0136
+	List *list2 = new List;		//Flight 0137
+	List *list3 = new List;		//Flight 0138
+	List *list4 = new List;		//Flight 0139
+	List *list5 = new List;		//Flight 0140
+	List gateArr[5] = { *list1, *list2, *list3, *list4, *list5 }; 
+
+	//Flight Records for Flight 0136
+	NODE *newNodeA = new NODE;
+		newNodeA->flight->destination = "Houston";
+		newNodeA->flight->flightNum = 136;
+		list1->append(list1, newNodeA);
+	NODE *newNodeA1 = new NODE;
+		newNodeA1->flight->destination = "Chicago";
+		newNodeA1->flight->flightNum = 136;
+		list1->append(list1, newNodeA1);
+	NODE *newNodeA2 = new NODE;
+		newNodeA2->flight->destination = "Baltimore";
+		newNodeA2->flight->flightNum = 136;
+		list1->append(list1, newNodeA2);
+	NODE *newNodeA3 = new NODE;
+		newNodeA3->flight->destination = "Detroit";
+		newNodeA3->flight->flightNum = 136;
+		list1->append(list1, newNodeA3);
+	NODE *newNodeA4 = new NODE;
+		newNodeA4->flight->destination = "Denver";
+		newNodeA4->flight->flightNum = 136;
+		list1->append(list1, newNodeA4);
+	NODE *newNodeA5 = new NODE;
+		newNodeA5->flight->destination = "Kansas City";
+		newNodeA5->flight->flightNum = 136;
+		list1->append(list1, newNodeA5);
+	NODE *newNodeA6 = new NODE;
+		newNodeA6->flight->destination = "Dallas";
+		newNodeA6->flight->flightNum = 136;
+		list1->prepend(list1, newNodeA6);
+		
+	//Flight Records for flight 0137
+	NODE *newNodeB = new NODE;
+		newNodeB->flight->destination = "Los Angeles";
+		newNodeB->flight->flightNum = 137;
+		list2->append(list2, newNodeB);
+	NODE *newNodeB1 = new NODE;
+		newNodeB1->flight->destination = "San Francisco";
+		newNodeB1->flight->flightNum = 137;
+		list2->append(list2, newNodeB1);
+	NODE *newNodeB2 = new NODE;
+		newNodeB2->flight->destination = "Salt Lake City";
+		newNodeB2->flight->flightNum = 137;
+		list2->append(list2, newNodeB2);
+	NODE *newNodeB3 = new NODE;
+		newNodeB3->flight->destination = "Detroit";
+		newNodeB3->flight->flightNum = 137;
+		list2->append(list2, newNodeB3);
+	NODE *newNodeB4 = new NODE;
+		newNodeB4->flight->destination = "West Palm Beach";
+		newNodeB4->flight->flightNum = 137;
+		list2->append(list2, newNodeB4);
+	NODE *CurNode = newNodeB4;
+	
+	//Flight Records for flight 0138
+	NODE *newNodeC = new NODE;
+		newNodeC->flight->destination = "Little Rock";
+		newNodeC->flight->flightNum = 138;
+		list3->append(list3, newNodeC);
+	NODE *newNodeC1 = new NODE;
+		newNodeC1->flight->destination = "De Moines";
+		newNodeC1->flight->flightNum = 138;
+		list3->append(list3, newNodeC1);
+	NODE *newNodeC2 = new NODE;
+		newNodeC2->flight->destination = "Minneapolis";
+		newNodeC2->flight->flightNum = 138;
+		list3->append(list3, newNodeC2);
+	NODE *newNodeC3 = new NODE;
+		newNodeC3->flight->destination = "Chicago";
+		newNodeC3->flight->flightNum = 138;
+		list3->append(list3, newNodeC3);
+	NODE *newNodeC4 = new NODE;
+		newNodeC4->flight->destination = "Dallas";
+		newNodeC4->flight->flightNum = 138;
+		list3->append(list3, newNodeC4);
+	NODE *newNodeC5 = new NODE;
+		newNodeC5->flight->destination = "Indianapolis";
+		newNodeC5->flight->flightNum = 138;
+	CurNode = newNodeC1;
+	list3->insertAfter(list3, CurNode, newNodeC5);
+
+	//Flight Records for flight 0139
+	NODE *newNodeD = new NODE;
+		newNodeD->flight->destination = "Houston";
+		newNodeD->flight->flightNum = 139;
+		list4->append(list4, newNodeD);
+	NODE *newNodeD1 = new NODE;
+		newNodeD1->flight->destination = "Reno";
+		newNodeD1->flight->flightNum = 139;
+		list4->append(list4, newNodeD1);
+	NODE *newNodeD2 = new NODE;
+		newNodeD2->flight->destination = "Las Alamos";
+		newNodeD2->flight->flightNum = 139;
+		list4->append(list4, newNodeD2);
+	NODE *newNodeD3 = new NODE;
+		newNodeD3->flight->destination = "Las Vegas";
+		newNodeD3->flight->flightNum = 139;
+		list4->append(list4, newNodeD3);
+	NODE *newNodeD4 = new NODE;
+		newNodeD4->flight->destination = "Phoenix";
+		newNodeD4->flight->flightNum = 139;
+	NODE *newNodeD5 = new NODE;
+		newNodeD5->flight->destination = "San Antonio";
+		newNodeD5->flight->flightNum = 139;
+		list4->append(list4, newNodeD5);
+
+	//Flight Records for flight 0140
+	NODE *newNodeE = new NODE;
+		newNodeE->flight->destination = "Oakland";
+		newNodeE->flight->flightNum = 140;
+		list5->append(list5, newNodeE);
+	NODE *newNodeE1 = new NODE;
+		newNodeE1->flight->destination = "San Diego";
+		newNodeE1->flight->flightNum = 140;
+		list5->append(list5, newNodeE1);
+	NODE *newNodeE2 = new NODE;
+		newNodeE2->flight->destination = "Denver";
+		newNodeE2->flight->flightNum = 140;
+		list5->append(list5, newNodeE2);
+	NODE *newNodeE3 = new NODE;
+		newNodeE3->flight->destination = "Memphis";
+		newNodeE3->flight->flightNum = 140;
+		list5->append(list5, newNodeE3);
+	NODE *newNodeE4 = new NODE;
+		newNodeE4->flight->destination = "Greenville";
+		newNodeE4->flight->flightNum = 140;
+		list5->append(list5, newNodeE4);
+	printGateInfo(list1, list2, list3, list4, list5);
+	system("pause");
+	return 0;
+	}
+
