@@ -1,0 +1,689 @@
+#include <iostream>
+#include <string>
+#include <array>
+using namespace std;
+
+struct NODE {
+	int value;
+	string word;
+	double num;
+	NODE *next;
+	NODE *prev;
+	};
+class List {
+	protected:
+		NODE *head;
+	NODE *currPos;
+	NODE *tail;
+	public:
+		int length;
+		List() {
+		head = 0;
+		length = 0;
+		currPos = 0;
+		tail = 0;
+		}
+		void append(List *list, NODE *newNode) {
+			if (list->head == 0) {		//list is empty
+				list->head = newNode;
+				list->tail = newNode;
+				list->head->prev = 0;
+				list->tail->next = 0;
+			}
+			else {
+				newNode->next = list->tail->next;
+				list->tail->next = newNode;
+				newNode->prev = list->tail;
+				list->tail = newNode;
+			}
+			list->length++;
+			};
+		void prepend(List *list, NODE *newNode) {
+			if (list->head == 0) { // List empty
+				list->head = newNode;
+				list->tail = newNode;
+				list->head->prev = 0;
+				list->tail->next = 0;
+				}
+			else {
+				newNode->prev = list->head->prev;
+				newNode->next = list->head;
+				list->head->prev = newNode;
+				list->head = newNode;
+				}
+			list->length++;
+			};
+		void insertAfter(List *list, NODE *currNode, NODE *newNode) {
+			if (list->head == 0) { // List empty
+				list->head = newNode;
+				list->tail = newNode;
+				}
+			else if (currNode == list->tail) { // Insert after tail
+				list->tail->next = newNode;
+				newNode->prev = list->tail;
+				list->tail = newNode;
+				}
+			else {
+				NODE *sucNode = currNode->next;
+				newNode->next = sucNode;
+				newNode->prev = currNode;
+				currNode->next = newNode;
+				sucNode->prev = newNode;
+				}
+			};
+		void remove(List *list, NODE *currPos) {
+			currPos = head;
+			NODE *sucNode = currPos->next;
+			NODE *predNode = currPos->prev;
+			if (sucNode != NULL) {
+				sucNode->prev = predNode;
+				}
+			if (predNode != NULL) {
+				predNode->next = sucNode;
+				}
+			if (currPos == list->head) { // Removed head
+				list->head = sucNode;
+				}
+			if (currPos == list->tail) { // Removed tail
+				list->tail = predNode;
+				}
+			list->length--;
+			};
+		void PeekNode(List *list) {
+			// Output value at head
+			cout << list->head->value << endl;
+			};
+		void printList_int(List *list) {
+			list->currPos = list->head; // Start at head
+			cout << list->currPos->value << ", ";
+			list->currPos = list->currPos->next;
+			while (list->currPos->next != 0) {	//prints value
+				cout << list->currPos->value << ", ";
+				list->currPos = list->currPos->next;
+				}
+			cout << list->currPos->value;
+			}
+		void printList_string(List *list) {
+			list->currPos = list->head; // Start at head
+			cout << list->currPos->word << ", ";
+			list->currPos = list->currPos->next;
+			while (list->currPos->next != 0) {	//prints value
+				cout << list->currPos->word << ", ";
+				list->currPos = list->currPos->next;
+				}
+			cout << list->currPos->word;
+			}
+		void printList_double(List *list) {
+			list->currPos = list->head; // Start at head
+			cout << list->currPos->num << ", ";
+			list->currPos = list->currPos->next;
+			while (list->currPos->next != 0) {	//prints value
+				cout << list->currPos->num << ", ";
+				list->currPos = list->currPos->next;
+				}
+			cout << list->currPos->num;
+			}
+	};
+class STACK : public List {
+	public:
+	//adds to beginning
+	void Stack_Push(STACK *stack, NODE *newNode)
+		{
+		stack->prepend(stack, newNode);
+		};
+	//prints beginning
+	void Stack_Pop(STACK *stack)
+		{
+		NODE *nothing2 = new NODE;
+		cout << "Stack Pop value: ";
+		//stack->PeekNode(stack);
+		stack->remove(stack, nothing2);
+		};
+	void Stack_Peek(STACK *stack)
+		{
+		//cout << "Stack Peek value: ";
+		stack->PeekNode(stack);
+		};
+	};
+class QUEUE : public List {
+	public:
+	//adds to end
+	void Queue_Push(QUEUE *queue, NODE *newNode)
+		{
+		queue->append(queue, newNode);
+		}
+	//prints beginning
+	void Queue_Pop(QUEUE *queue)
+		{
+		NODE *nothing1 = new NODE;
+		cout << "Queue Pop value: ";
+		queue->PeekNode(queue);
+		queue->remove(queue, nothing1);
+		};
+	void Queue_Peek(QUEUE *queue)
+		{
+		cout << "Queue Peek value: ";
+		queue->PeekNode(queue);
+		};
+	};
+void SelectionSort1(int numbers[], int numbersSize) {
+	int i = 0;
+	int j = 0;
+	int indexSmallest = 0;
+	int temp = 0;  // Temporary variable for swap
+	for (i = 0; i < numbersSize - 1; ++i) {
+		// Find index of smallest remaining element
+		indexSmallest = i;
+		for (j = i + 1; j < numbersSize; ++j) {
+			if (numbers[j] < numbers[indexSmallest]) {
+				indexSmallest = j;
+				}
+			}
+		// Swap numbers[i] and numbers[indexSmallest]
+		temp = numbers[i];
+		numbers[i] = numbers[indexSmallest];
+		numbers[indexSmallest] = temp;
+		}
+	}
+void SelectionSort2(string numbers[], int numbersSize) {
+	int i = 0;
+	int j = 0;
+	int indexSmallest = 0;
+	string temp;  // Temporary variable for swap
+	for (i = 0; i < numbersSize - 1; ++i) {
+		// Find index of smallest remaining element
+		indexSmallest = i;
+		for (j = i + 1; j < numbersSize; ++j) {
+			if (numbers[j] < numbers[indexSmallest]) {
+				indexSmallest = j;
+				}
+			}
+		// Swap numbers[i] and numbers[indexSmallest]
+		temp = numbers[i];
+		numbers[i] = numbers[indexSmallest];
+		numbers[indexSmallest] = temp;
+		}
+	}
+void SelectionSort3(double numbers[], int numbersSize) {
+	int i = 0;
+	int j = 0;
+	int indexSmallest = 0;
+	double temp = 0;  // Temporary variable for swap
+	for (i = 0; i < numbersSize - 1; ++i) {
+		// Find index of smallest remaining element
+		indexSmallest = i;
+		for (j = i + 1; j < numbersSize; ++j) {
+			if (numbers[j] < numbers[indexSmallest]) {
+				indexSmallest = j;
+				}
+			}
+		// Swap numbers[i] and numbers[indexSmallest]
+		temp = numbers[i];
+		numbers[i] = numbers[indexSmallest];
+		numbers[indexSmallest] = temp;
+		}
+	}
+void Stack_1(int list_1[]) {
+	STACK *stack1 = new STACK;
+	NODE *stack_node1 = new NODE;			//creates new node to add to stack
+		stack_node1->value = list_1[13];	//assigns values to nodes
+	NODE *stack_node2 = new NODE;
+		stack_node2->value = list_1[12];
+	NODE *stack_node3 = new NODE;
+		stack_node3->value = list_1[11];
+	NODE *stack_node4 = new NODE;
+		stack_node4->value = list_1[10];
+	NODE *stack_node5 = new NODE;
+		stack_node5->value = list_1[9];
+	NODE *stack_node6 = new NODE;
+		stack_node6->value = list_1[8];
+	NODE *stack_node7 = new NODE;
+		stack_node7->value = list_1[7];
+	NODE *stack_node8 = new NODE;
+		stack_node8->value = list_1[6];
+	NODE *stack_node9 = new NODE;
+		stack_node9->value = list_1[5];
+	NODE *stack_node10 = new NODE;
+		->value = list_1[4];
+	NODE *stack_node11 = new NODE;
+		stack_node11->value = list_1[3];
+	NODE *stack_node12 = new NODE;
+		stack_node12->value = list_1[2];
+	NODE *stack_node13 = new NODE;
+		stack_node13->value = list_1[1];
+	NODE *stack_node14 = new NODE;
+		stack_node14->value = list_1[0];
+	stack1->Stack_Push(stack1, stack_node1); //pushes to stack
+	stack1->Stack_Push(stack1, stack_node2);
+	stack1->Stack_Push(stack1, stack_node3);
+	stack1->Stack_Push(stack1, stack_node4);
+	stack1->Stack_Push(stack1, stack_node5);
+	stack1->Stack_Push(stack1, stack_node6);
+	stack1->Stack_Push(stack1, stack_node7);
+	stack1->Stack_Push(stack1, stack_node8);
+	stack1->Stack_Push(stack1, stack_node9);
+	stack1->Stack_Push(stack1, stack_node10);
+	stack1->Stack_Push(stack1, stack_node11);
+	stack1->Stack_Push(stack1, stack_node12);
+	stack1->Stack_Push(stack1, stack_node13);
+	stack1->Stack_Push(stack1, stack_node14);
+	cout << endl << endl << endl << "Ascending (stack): " << endl;
+	cout << "List 1: ";
+	stack1->printList_int(stack1);
+	cout << endl;
+	delete stack_node1, stack_node2, stack_node3, stack_node4, stack_node5, stack_node6, stack_node7;
+	delete stack_node8, stack_node9, stack_node10, stack_node11, stack_node12, stack_node13, stack_node14;
+	delete stack1;
+	}
+void Stack_2(string list_2[]) {
+	STACK *stack2 = new STACK;
+	//loads list 2 to stack
+	NODE *stack_node_1 = new NODE;			//creates new node to add to stack
+		stack_node_1->word = list_2[11];
+	NODE *stack_node_2 = new NODE;
+		stack_node_2->word = list_2[10];
+	NODE *stack_node_3 = new NODE;
+		stack_node_3->word = list_2[9];
+	NODE *stack_node_4 = new NODE;
+		stack_node_4->word = list_2[8];
+	NODE *stack_node_5 = new NODE;
+		stack_node_5->word = list_2[7];
+	NODE *stack_node_6 = new NODE;
+		stack_node_6->word = list_2[6];
+	NODE *stack_node_7 = new NODE;
+		stack_node_7->word = list_2[5];
+	NODE *stack_node_8 = new NODE;
+		stack_node_8->word = list_2[4];
+	NODE *stack_node_9 = new NODE;
+		stack_node_9->word = list_2[3];
+	NODE *stack_node_10 = new NODE;
+		stack_node_10->word = list_2[2];
+	NODE *stack_node_11 = new NODE;
+		stack_node_11->word = list_2[1];
+	NODE *stack_node_12 = new NODE;
+		stack_node_12->word = list_2[0];
+	stack2->Stack_Push(stack2, stack_node_1); //pushes to stack
+	stack2->Stack_Push(stack2, stack_node_2);
+	stack2->Stack_Push(stack2, stack_node_3);
+	stack2->Stack_Push(stack2, stack_node_4);
+	stack2->Stack_Push(stack2, stack_node_5);
+	stack2->Stack_Push(stack2, stack_node_6);
+	stack2->Stack_Push(stack2, stack_node_7);
+	stack2->Stack_Push(stack2, stack_node_8);
+	stack2->Stack_Push(stack2, stack_node_9);
+	stack2->Stack_Push(stack2, stack_node_10);
+	stack2->Stack_Push(stack2, stack_node_11);
+	stack2->Stack_Push(stack2, stack_node_12);
+	cout << "List 2: ";
+	stack2->printList_string(stack2);
+	cout << endl;
+	delete stack_node_1, stack_node_2, stack_node_3, stack_node_4, stack_node_5, stack_node_6, stack_node_7;
+	delete stack_node_8, stack_node_9, stack_node_10, stack_node_11, stack_node_12;
+	delete stack2;
+	}
+void Stack_3(double list_3[]) {
+	STACK *stack3 = new STACK;
+	//loads list 3 to stack
+	NODE *stacknode_1 = new NODE;			//creates new node to add to stack
+		stacknode_1->num = list_3[8];
+	NODE *stacknode_2 = new NODE;
+		stacknode_2->num = list_3[7];
+	NODE *stacknode_3 = new NODE;
+		stacknode_3->num = list_3[6];
+	NODE *stacknode_4 = new NODE;
+		stacknode_4->num = list_3[5];
+	NODE *stacknode_5 = new NODE;
+		stacknode_5->num = list_3[4];
+	NODE *stacknode_6 = new NODE;
+		stacknode_6->num = list_3[3];
+	NODE *stacknode_7 = new NODE;
+		stacknode_7->num = list_3[2];
+	NODE *stacknode_8 = new NODE;
+		stacknode_8->num = list_3[1];
+	NODE *stacknode_9 = new NODE;
+		stacknode_9->num = list_3[0];
+	stack3->Stack_Push(stack3, stacknode_1); //pushes to stack
+	stack3->Stack_Push(stack3, stacknode_2);
+	stack3->Stack_Push(stack3, stacknode_3);
+	stack3->Stack_Push(stack3, stacknode_4);
+	stack3->Stack_Push(stack3, stacknode_5);
+	stack3->Stack_Push(stack3, stacknode_6);
+	stack3->Stack_Push(stack3, stacknode_7);
+	stack3->Stack_Push(stack3, stacknode_8);
+	stack3->Stack_Push(stack3, stacknode_9);
+	cout << "List 3: ";
+	stack3->printList_double(stack3);
+	cout << endl;
+	delete stacknode_1, stacknode_2, stacknode_3, stacknode_4, stacknode_5, stacknode_6, stacknode_7;
+	delete stacknode_8, stacknode_9;
+	delete stack3;
+	}
+void Stack_4(string list_4[]) {
+	STACK *stack4 = new STACK;
+	//loads list 4 to stack
+	NODE *stacknode1 = new NODE;
+	stacknode1->word = list_4[10];
+	NODE *stacknode2 = new NODE;
+	stacknode2->word = list_4[9];
+	NODE *stacknode3 = new NODE;
+	stacknode3->word = list_4[8];
+	NODE *stacknode4 = new NODE;
+	stacknode4->word = list_4[7];
+	NODE *stacknode5 = new NODE;
+	stacknode5->word = list_4[6];
+	NODE *stacknode6 = new NODE;
+	stacknode6->word = list_4[5];
+	NODE *stacknode7 = new NODE;
+	stacknode7->word = list_4[4];
+	NODE *stacknode8 = new NODE;
+	stacknode8->word = list_4[3];
+	NODE *stacknode9 = new NODE;
+	stacknode9->word = list_4[2];
+	NODE *stacknode10 = new NODE;
+	stacknode10->word = list_4[1];
+	NODE *stacknode11 = new NODE;
+	stacknode11->word = list_4[0];
+	stack4->Stack_Push(stack4, stacknode1); //pushes to stack
+	stack4->Stack_Push(stack4, stacknode2);
+	stack4->Stack_Push(stack4, stacknode3);
+	stack4->Stack_Push(stack4, stacknode4);
+	stack4->Stack_Push(stack4, stacknode5);
+	stack4->Stack_Push(stack4, stacknode6);
+	stack4->Stack_Push(stack4, stacknode7);
+	stack4->Stack_Push(stack4, stacknode8);
+	stack4->Stack_Push(stack4, stacknode9);
+	stack4->Stack_Push(stack4, stacknode10);
+	stack4->Stack_Push(stack4, stacknode11);
+	cout << "List 4: ";
+	stack4->printList_string(stack4);
+	cout << endl;
+	delete stack4;
+	}
+void Queue_1(int list_1[]) {
+	QUEUE *queue1 = new QUEUE;
+	NODE *queue_node1 = new NODE;			   //creates new node to add to queue
+		queue_node1->value = list_1[13];	   //assigns values to nodes
+	NODE *queue_node2 = new NODE;
+		queue_node2->value = list_1[12];
+	NODE *queue_node3 = new NODE;
+		queue_node3->value = list_1[11];
+	NODE *queue_node4 = new NODE;
+		queue_node4->value = list_1[10];
+	NODE *queue_node5 = new NODE;
+		queue_node5->value = list_1[9];
+	NODE *queue_node6 = new NODE;
+		queue_node6->value = list_1[8];
+	NODE *queue_node7 = new NODE;
+		queue_node7->value = list_1[7];
+	NODE *queue_node8 = new NODE;
+		queue_node8->value = list_1[6];
+	NODE *queue_node9 = new NODE;
+		queue_node9->value = list_1[5];
+	NODE *queue_node10 = new NODE;
+		queue_node10->value = list_1[4];
+	NODE *queue_node11 = new NODE;
+		queue_node11->value = list_1[3];
+	NODE *queue_node12 = new NODE;
+		queue_node12->value = list_1[2];
+	NODE *queue_node13 = new NODE;
+		queue_node13->value = list_1[1];
+	NODE *queue_node14 = new NODE;
+		queue_node14->value = list_1[0];
+	queue1->Queue_Push(queue1, queue_node1);	//pushes to queue
+	queue1->Queue_Push(queue1, queue_node2);
+	queue1->Queue_Push(queue1, queue_node3);
+	queue1->Queue_Push(queue1, queue_node4);
+	queue1->Queue_Push(queue1, queue_node5);
+	queue1->Queue_Push(queue1, queue_node6);
+	queue1->Queue_Push(queue1, queue_node7);
+	queue1->Queue_Push(queue1, queue_node8);
+	queue1->Queue_Push(queue1, queue_node9);
+	queue1->Queue_Push(queue1, queue_node10);
+	queue1->Queue_Push(queue1, queue_node11);
+	queue1->Queue_Push(queue1, queue_node12);
+	queue1->Queue_Push(queue1, queue_node13);
+	queue1->Queue_Push(queue1, queue_node14);
+	cout << endl << endl << "Descending (queue): " << endl;
+	cout << "List 1: ";
+	queue1->printList_int(queue1);
+	cout << endl;
+	delete queue_node1, queue_node2, queue_node3, queue_node4, queue_node5, queue_node6, queue_node7;
+	delete queue_node8, queue_node9, queue_node10, queue_node11, queue_node12, queue_node13, queue_node14;
+	delete queue1;
+	}
+void Queue_2(string list_2[]) {
+	QUEUE *queue2 = new QUEUE;
+	//loads list 2 to the queue
+	NODE *queue_node_1 = new NODE;
+		queue_node_1->word = list_2[11];
+	NODE *queue_node_2 = new NODE;
+		queue_node_2->word = list_2[10];
+	NODE *queue_node_3 = new NODE;
+		queue_node_3->word = list_2[9];
+	NODE *queue_node_4 = new NODE;
+		queue_node_4->word = list_2[8];
+	NODE *queue_node_5 = new NODE;
+		queue_node_5->word = list_2[7];
+	NODE *queue_node_6 = new NODE;
+		queue_node_6->word = list_2[6];
+	NODE *queue_node_7 = new NODE;
+		queue_node_7->word = list_2[5];
+	NODE *queue_node_8 = new NODE;
+		queue_node_8->word = list_2[4];
+	NODE *queue_node_9 = new NODE;
+		queue_node_9->word = list_2[3];
+	NODE *queue_node_10 = new NODE;
+		queue_node_10->word = list_2[2];
+	NODE *queue_node_11 = new NODE;
+		queue_node_11->word = list_2[1];
+	NODE *queue_node_12 = new NODE;
+		queue_node_12->word = list_2[0];
+	queue2->Queue_Push(queue2, queue_node_1);	//pushes to queue
+	queue2->Queue_Push(queue2, queue_node_2);
+	queue2->Queue_Push(queue2, queue_node_3);
+	queue2->Queue_Push(queue2, queue_node_4);
+	queue2->Queue_Push(queue2, queue_node_5);
+	queue2->Queue_Push(queue2, queue_node_6);
+	queue2->Queue_Push(queue2, queue_node_7);
+	queue2->Queue_Push(queue2, queue_node_8);
+	queue2->Queue_Push(queue2, queue_node_9);
+	queue2->Queue_Push(queue2, queue_node_10);
+	queue2->Queue_Push(queue2, queue_node_11);
+	queue2->Queue_Push(queue2, queue_node_12);
+	cout << "List 2: ";
+	queue2->printList_string(queue2);
+	cout << endl;
+	delete queue_node_1, queue_node_2, queue_node_3, queue_node_4, queue_node_5, queue_node_6, queue_node_7;
+	delete queue_node_8, queue_node_9, queue_node_10, queue_node_11, queue_node_12;
+	delete queue2;
+	}
+void Queue_3(double list_3[]) {
+	QUEUE *queue3 = new QUEUE;
+	//loads list 3 to the queue
+	NODE *queuenode_1 = new NODE;
+		queuenode_1->num = list_3[8];
+	NODE *queuenode_2 = new NODE;
+		queuenode_2->num = list_3[7];
+	NODE *queuenode_3 = new NODE;
+		queuenode_3->num = list_3[6];
+	NODE *queuenode_4 = new NODE;
+		queuenode_4->num = list_3[5];
+	NODE *queuenode_5 = new NODE;
+		queuenode_5->num = list_3[4];
+	NODE *queuenode_6 = new NODE;
+		queuenode_6->num = list_3[3];
+	NODE *queuenode_7 = new NODE;
+		queuenode_7->num = list_3[2];
+	NODE *queuenode_8 = new NODE;
+		queuenode_8->num = list_3[1];
+	NODE *queuenode_9 = new NODE;
+		queuenode_9->num = list_3[0];
+	queue3->Queue_Push(queue3, queuenode_1);	//pushes to queue
+	queue3->Queue_Push(queue3, queuenode_2);
+	queue3->Queue_Push(queue3, queuenode_3);
+	queue3->Queue_Push(queue3, queuenode_4);
+	queue3->Queue_Push(queue3, queuenode_5);
+	queue3->Queue_Push(queue3, queuenode_6);
+	queue3->Queue_Push(queue3, queuenode_7);
+	queue3->Queue_Push(queue3, queuenode_8);
+	queue3->Queue_Push(queue3, queuenode_9);
+	cout << "List 3: ";
+	queue3->printList_double(queue3);
+	cout << endl;
+	delete queuenode_1, queuenode_2, queuenode_3, queuenode_4, queuenode_5, queuenode_6, queuenode_7;
+	delete queuenode_8, queuenode_9;
+	delete queue3;
+	}
+void Queue_4(string list_4[]) {
+	QUEUE *queue4 = new QUEUE;
+	//loads list 4 to the queue
+	NODE *queuenode1 = new NODE;
+		queuenode1->word = list_4[10];
+	NODE *queuenode2 = new NODE;
+		queuenode2->word = list_4[9];
+	NODE *queuenode3 = new NODE;
+		queuenode3->word = list_4[8];
+	NODE *queuenode4 = new NODE;
+		queuenode4->word = list_4[7];
+	NODE *queuenode5 = new NODE;
+		queuenode5->word = list_4[6];
+	NODE *queuenode6 = new NODE;
+		queuenode6->word = list_4[5];
+	NODE *queuenode7 = new NODE;
+		queuenode7->word = list_4[4];
+	NODE *queuenode8 = new NODE;
+		queuenode8->word = list_4[3];
+	NODE *queuenode9 = new NODE;
+		queuenode9->word = list_4[2];
+	NODE *queuenode10 = new NODE;
+		queuenode10->word = list_4[1];
+	NODE *queuenode11 = new NODE;
+		queuenode11->word = list_4[0];
+	queue4->Queue_Push(queue4, queuenode1);	//pushes to queue
+	queue4->Queue_Push(queue4, queuenode2);
+	queue4->Queue_Push(queue4, queuenode3);
+	queue4->Queue_Push(queue4, queuenode4);
+	queue4->Queue_Push(queue4, queuenode5);
+	queue4->Queue_Push(queue4, queuenode6);
+	queue4->Queue_Push(queue4, queuenode7);
+	queue4->Queue_Push(queue4, queuenode8);
+	queue4->Queue_Push(queue4, queuenode9);
+	queue4->Queue_Push(queue4, queuenode10);
+	queue4->Queue_Push(queue4, queuenode11);
+	cout << "List 4: ";
+	queue4->printList_string(queue4);
+	cout << endl;
+	delete queuenode1, queuenode2, queuenode3, queuenode4, queuenode5, queuenode6, queuenode7;
+	delete queuenode8, queuenode9, queuenode10, queuenode11;
+	delete queuenode4;
+	}
+int main() {
+	int list_1[15];
+		list_1[0] = 20;
+		list_1[1] = 40;
+		list_1[2] = -1;
+		list_1[3] = 7;
+		list_1[4] = 8;
+		list_1[5] = -100;
+		list_1[6] = 40;
+		list_1[7] = 3;
+		list_1[8] = 10;
+		list_1[9] = 6;
+		list_1[10] = 8;
+		list_1[11] = 2;
+		list_1[12] = -3;
+		list_1[13] = 4;
+		list_1[14] = 5;
+		int list_1_capacity = sizeof(list_1)/sizeof(list_1[0]);
+	string list_2[12];
+		list_2[0] = "bird";
+		list_2[1] = "owl";
+		list_2[2] = "dog";
+		list_2[3] = "bat";
+		list_2[4] = "zebra";
+		list_2[5] = "anteater";
+		list_2[6] = "snake";
+		list_2[7] = "howler monkey";
+		list_2[8] = "elephant";
+		list_2[9] = "tiger";
+		list_2[10] = "giraffe";
+		list_2[11] = "lion";
+		int list_2_capacity = sizeof(list_2) / sizeof(list_2[0]);
+	double list_3[9];
+		list_3[0] = 3.4;
+		list_3[1] = 5.5;
+		list_3[2] = 0.1;
+		list_3[3] = 1.0;
+		list_3[4] = 1.5;
+		list_3[5] = 6.7;
+		list_3[6] = 89.3;
+		list_3[7] = -1.3;
+		list_3[8] = 0.0;
+		int list_3_capacity = sizeof(list_3) / sizeof(list_3[0]);
+	string list_4[11];
+		list_4[0] = "Ron";	
+		list_4[1] = "Gary";
+		list_4[2] = "Linda";
+		list_4[3] = "Barry";
+		list_4[4] = "Andre";
+		list_4[5] = "EJ";
+		list_4[6] = "Carrie";
+		list_4[7] = "Quincy";
+		list_4[8] = "Jamika";
+		list_4[9] = "Robert";
+		list_4[10] = "Fran";
+		int list_4_capacity = sizeof(list_4) / sizeof(list_4[0]);
+	cout << "My unsorted lists: " << endl << "List 1: ";
+	for (int i = 0; i < list_1_capacity; i++) {
+		cout << list_1[i] << ", ";
+		}
+	cout <<endl<< "List 2: ";
+	for (int i = 0; i < list_2_capacity; i++) {
+		cout << list_2[i] << ", ";
+		}
+	cout <<endl<< "List 3: ";
+	for (int i = 0; i < list_3_capacity; i++) {
+		cout << list_3[i] << ", ";
+		}
+	cout <<endl<< "List 4: ";
+	for (int i = 0; i < list_4_capacity; i++) {
+		cout << list_4[i] << ", ";
+		}
+
+	//sorts in ascending order
+	SelectionSort1(list_1, list_1_capacity);	//ints
+	SelectionSort2(list_2, list_2_capacity);	//strings
+	SelectionSort3(list_3, list_3_capacity);	//floats
+	SelectionSort2(list_4, list_4_capacity);	//strings
+
+	cout << endl << endl<<endl<< "Selection sorted lists: " << endl << "List 1: ";
+	for (int i = 0; i < list_1_capacity; i++) {
+		cout << list_1[i] << ", ";
+		}
+	cout <<endl<< "List 2: ";
+	for (int i = 0; i < list_2_capacity; i++) {
+	cout << list_2[i] << ", ";
+	}
+	cout <<endl<< "List 3: ";
+	for (int i = 0; i < list_3_capacity; i++) {
+		cout << list_3[i] << ", ";
+		}
+	cout << endl<<"List 4: ";
+	for (int i = 0; i < list_4_capacity; i++) {
+	cout << list_4[i] << ", ";
+	}
+
+	Stack_1(list_1);
+	Stack_2(list_2);
+	Stack_3(list_3);
+	Stack_4(list_4);
+
+	Queue_1(list_1);
+	Queue_2(list_2);
+	Queue_3(list_3);
+	Queue_4(list_4);
+	
+	system("pause");
+	return 0;
+	}
+
