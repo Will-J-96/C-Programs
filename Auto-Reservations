@@ -1,0 +1,176 @@
+#include <string>
+#include <iomanip>
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main()
+{
+    char answer1, answer2;
+    int choice, ID = 0;
+    //created my Soda struct
+    struct Soda 
+        {
+            int quantity;
+            string brandname;
+            string sodaname;
+            float price;
+            string ingredients[5];
+            //constructor to initialize variables
+            Soda()  
+            {
+                quantity = 1;       //only one can per brand, to make for easy testing (sold out, empty unit)
+            };
+        }; Soda Coke, PowerPuff, Dew, Sprite;
+        
+        Coke.brandname = "Coca-Cola";               //defining sodas
+        Coke.sodaname = "Coke";
+        Coke.ingredients[0] = "Corn Syrup";
+        Coke.ingredients[1] = "Water";
+        Coke.ingredients[2] = "Carbonation";
+        Coke.price = 1.25;
+
+        PowerPuff.brandname = "Cartoon Network";
+        PowerPuff.sodaname = "Power Puff Girls";
+        PowerPuff.ingredients[0] = "Sugar";
+        PowerPuff.ingredients[1] = "Spice";
+        PowerPuff.ingredients[2] = "Everything Nice";
+        PowerPuff.price = 1.75;
+
+        Dew.brandname = "Mellow Yellow";
+        Dew.sodaname = "Mountain Dew";
+        Dew.ingredients[0] = "Glucose";
+        Dew.ingredients[1] = "Agua";
+        Dew.ingredients[2] = "Food Coloring";
+        Dew.price = 1.35;
+
+        Sprite.brandname = "Sierra Mist";
+        Sprite.sodaname = "Sprite";
+        Sprite.ingredients[0] = "Monosaccharides";
+        Sprite.ingredients[1] = "DiHydrogen Monoxide";
+        Sprite.ingredients[2] = "Lemon";
+        Sprite.price = 1.55;
+
+        int unit_quanity = Coke.quantity + PowerPuff.quantity + Dew.quantity + Sprite.quantity;     //total cans in the vending machine
+
+        while (unit_quanity > 0)        //runs as long as there are cans to sell
+        {
+            cout << endl << endl << endl << "Welcome to my vending machine!" << endl;
+            
+
+            //prompt for table with data on sodas
+            cout << "Would you like to know more about our beverages (Y/N)?   ";
+            cin >> answer1;
+            if (answer1 == 'Y')
+            {
+                cout <<endl<< "Option 1 ----->" << "| Name: " << Coke.sodaname << "             |----->| "<<"Price: $" << Coke.price <<" |----->"<<"| Brand: " << Coke.brandname << "       |----->"<<"| Ingredients: " << Coke.ingredients[0] << ", " << Coke.ingredients[1] << ", and " << Coke.ingredients[2] <<"              |"<< endl<<endl;
+                cout << "Option 2 ----->" << "| Name: " << PowerPuff.sodaname  << " |----->| "<<"Price: $" << PowerPuff.price  <<" |----->"<<"| Brand: " << PowerPuff.brandname   <<" |----->"<<"| Ingredients: " << PowerPuff.ingredients[0] << ", " << PowerPuff.ingredients[1] << ", and " << PowerPuff.ingredients[2] <<"               |"<< endl<<endl;
+                cout << "Option 3 ----->" << "| Name: " << Dew.sodaname << "     |----->| " << "Price: $" << Dew.price << " |----->" << "| Brand: " << Dew.brandname << "   |----->" << "| Ingredients: " << Dew.ingredients[0] << ", " << Dew.ingredients[1] << ", and " << Dew.ingredients[2] << "                |" << endl<<endl;
+                cout << "Option 4 ----->" << "| Name: " << Sprite.sodaname << "           |----->| " << "Price: $" << Sprite.price << " |----->" << "| Brand: " << Sprite.brandname << "     |----->" << "| Ingredients: " << Sprite.ingredients[0] << ", " << Sprite.ingredients[1] << ", and " << Sprite.ingredients[2] << " |" <<endl<< endl;
+            }
+
+            
+            //prompt for sale
+            cout << "Would you like to buy a soda (Y/N)?   ";
+            cin >> answer2;
+            if (answer2 == 'Y') {
+                cout << "| For: Coke         |----->| Press 1 |" << endl;
+                cout << "| For: PowerPuff    |----->| Press 2 |" << endl;
+                cout << "| For: Mountain Dew |----->| Press 3 |" << endl;
+                cout << "| For: Sprite       |----->| Press 4 |         ";
+                cin >> choice;
+
+                //they choose Coke 
+                if (choice == 1) 
+                {          
+                    if (Coke.quantity < 1)          //Make sure there's a can to sell
+                       {
+                       cout << "Sold Out!" << endl;
+                       return 0;
+                       }
+                    else 
+                      {
+                      cout <<endl<< "Please Enter Your Student ID:    ";
+                      cin >> ID;
+                      cout << "Your Bison Account will be automatically debited $";
+                      cout << Coke.price << " for a " << Coke.sodaname << endl;
+                      Coke.quantity--;                  //update inventory logs
+                      unit_quanity--;                   
+                      cout << "Now dispensing...Enjoy your day!" << endl << endl << endl<<endl<<endl;
+                      }
+                }
+
+                //they choose Power Puff
+                else if (choice == 2) {                 //Make sure there's a can to sell
+                    if (PowerPuff.quantity < 0){
+                        cout << "Sold Out of this soda!" << endl;
+                        return 0;
+                    }
+                    else {
+                        cout << endl << "Please Enter Your Student ID:    ";
+                        cin >> ID;
+                        cout << "Your Bison Account will be automatically debited $";
+                        cout << PowerPuff.price << " for a " << PowerPuff.sodaname << endl;
+                        PowerPuff.quantity--;               //update inventory logs
+                        unit_quanity--;
+                        cout << "Now dispensing...Enjoy your day!" << endl << endl << endl;
+                    }
+                }
+
+
+                //they choose Mountain Dew
+                else if (choice == 3) {                 //Make sure there's a can to sell
+                    if (Dew.quantity < 0){
+                        cout << "Sold Out of this soda!" << endl;
+                        return 0;
+                    }
+                    else {
+                        cout << endl << "Please Enter Your Student ID:    ";
+                        cin >> ID;
+                        cout << "Your Bison Account will be automatically debited $";
+                        cout << Dew.price << " for a " << Dew.sodaname << endl;
+                        Dew.quantity--;         //update inventory logs
+                        unit_quanity--;
+                        cout << "Now dispensing...Enjoy your day!" << endl << endl << endl;
+                    }
+                }
+
+
+                //they choose Sprite
+                else if (choice == 4) {                 //Make sure there's a can to sell
+                    if (Sprite.quantity < 0){
+                        cout << "Sold Out of this soda!" << endl;
+                        return 0;
+                    }
+                    else {
+                        cout << endl << "Please Enter Your Student ID:    ";
+                        cin >> ID;
+                        cout << "Your Bison Account will be automatically debited $";
+                        cout << Sprite.price << " for a " << Sprite.sodaname << endl;
+                        Sprite.quantity--;          //update inventory logs
+                        unit_quanity--;
+                        cout << "Now dispensing...Enjoy your day!" << endl << endl << endl;
+                    }
+                }
+
+                //they didn't choose a soda
+                else {
+                    cout <<endl<< "Invalid entry! Hope you're not thirsty..." << endl << endl << endl << endl<<endl<<endl;
+                }
+            }
+
+
+            //they didn't want to buy a soda
+            else if (answer2 == 'N') {
+                cout << "Have a nice day!" << endl << endl << endl;
+            }
+        }
+
+        //machine ran out of inventory
+        if (unit_quanity < 1)
+        {
+            cout << "This unit is empty!" << endl;
+            
+        }
+return 0;
+}
