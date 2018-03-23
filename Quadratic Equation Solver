@@ -1,0 +1,55 @@
+#include "stdafx.h"
+#include <iostream>
+#include "math.h"
+using namespace std;
+void isQuadratic();
+int x1, x2, x3 = 0;
+int* ptr1 = &x1;
+int* ptr2 = &x2;
+int* ptr3 = &x3;
+bool valid;
+
+int main() {
+    int A, B, C = 0;
+    
+    cout << "Welcome! A quadratic equations is of the form: Ax^2 + Bx + C " << endl;
+    cout << "Time to make your own!" << endl << "Please enter an integer value for A: ";
+        cin >> A;
+    cout << "Please enter an integer value for B: ";
+        cin >> B;
+    cout << "Please enter an integer value for C: ";
+        cin >> C;
+
+    //First, we find the discriminant (which determines the number of real solutions
+        x3 = (B*B) - (4 * A*C);
+    
+
+    //Now we find the roots
+     x2 = ((-B) - sqrt(((B*B) - 4 * A*C))) / (2 * A);
+     x1 = ((-B) + sqrt(((B*B) - 4 * A*C))) / (2 * A);
+        
+
+    isQuadratic();
+
+
+    return 0;
+
+
+}
+
+void isQuadratic()
+{
+    int This = *ptr3;   //send the discriminant by reference
+    if (This >= 0)
+        {
+        valid= true;
+        cout << "X1 = " << x1 << endl;
+        cout << "X2 = " << x2 << endl;
+        }
+   else             //if discriminant is negative, both solutions are imaginary
+        {
+        valid = false;
+        cout << "Calculated numbers X1 and X2 are not real numbers. They are imaginary!" << endl << endl;
+    }
+}
+
