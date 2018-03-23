@@ -1,0 +1,955 @@
+/* clock example: frequency of primes 
+#include <stdio.h>      /* printf 
+#include <time.h>       /* clock_t, clock, CLOCKS_PER_SEC 
+#include <math.h>       /* sqrt
+#include <cstdlib>	
+int frequency_of_primes(int n) {
+	int i, j;
+	int freq = n - 1;
+	for (i = 2; i <= n; ++i) for (j = sqrt(i); j>1; --j) if (i%j == 0) { --freq; break; }
+	return freq;
+}
+
+int main()
+{
+	clock_t t;
+	int f;
+	t = clock();
+	printf("Calculating...\n");
+	f = frequency_of_primes(99999);
+	printf("The number of primes lower than 100,000 is: %d\n", f);
+	t = clock() - t;
+	printf("It took me %d clicks (%f seconds).\n", t, ((float)t) / CLOCKS_PER_SEC);
+	system("pause");
+	return 0;
+}*/
+
+#include <cctype>
+#include <ctime>
+#include <array>
+#include <vector>
+#include <string>
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+void Alpha_Fill(vector<char> &alpha) {
+	alpha.push_back('A');
+	alpha.push_back('B');
+	alpha.push_back('C');
+	alpha.push_back('D');
+	alpha.push_back('E');
+	alpha.push_back('F');
+	alpha.push_back('G');
+	alpha.push_back('H');
+	alpha.push_back('I');
+	alpha.push_back('J');
+	alpha.push_back('K');
+	alpha.push_back('L');
+	alpha.push_back('M');
+	alpha.push_back('N');
+	alpha.push_back('O');
+	alpha.push_back('P');
+	alpha.push_back('Q');
+	alpha.push_back('R');
+	alpha.push_back('S');
+	alpha.push_back('T');
+	alpha.push_back('U');
+	alpha.push_back('V');
+	alpha.push_back('W');
+	alpha.push_back('X');
+	alpha.push_back('Y');
+	alpha.push_back('Z');
+	};
+void generate_code(vector<char> &key_char, vector<char> &scramble, vector<char> &finvec, int &decode_key, vector<char> &alpha) {
+	//generate scramble vector
+	int random = 1; // rand() % 5;
+	vector<int> rand1;	//vector stores random numbers
+	vector<char> scramble_copy;
+	vector<char> finvec_copy;
+	switch (random) {
+		case 1:
+			decode_key = 1;
+			// generate encryption order vector
+			rand1.push_back(12);	//0
+			rand1.push_back(20);//1
+			rand1.push_back(22);	//2
+			rand1.push_back(17);//3
+			rand1.push_back(26);	//4
+			rand1.push_back(23);//5
+			rand1.push_back(18);	//6
+			rand1.push_back(11);//7
+			rand1.push_back(24);	//8
+			rand1.push_back(5);//9
+			rand1.push_back(19);	//10
+			rand1.push_back(14);//11
+			rand1.push_back(10);	//12
+			rand1.push_back(8);//13
+			rand1.push_back(13);	//14
+			rand1.push_back(6);//15
+			rand1.push_back(3);		//16
+			rand1.push_back(21);//17
+			rand1.push_back(7);		//18
+			rand1.push_back(16);//19
+			rand1.push_back(1);		//20
+			rand1.push_back(25);//21
+			rand1.push_back(4);		//22
+			rand1.push_back(9);//23
+			rand1.push_back(2);		//24
+			rand1.push_back(15);//25
+			}
+	
+	//randomly fill scramble_copy vector with letters
+	for (int x = 0; x != rand1.size(); x++) {
+		int tem = rand1.at(x);
+		switch (tem) {
+		case 1:
+			scramble_copy.push_back('A');
+			break;
+		case 2:
+			scramble_copy.push_back('B');
+			break;
+		case 3:
+			scramble_copy.push_back('C');
+			break;
+		case 4:
+			scramble_copy.push_back('D');
+			break;
+		case 5:
+			scramble_copy.push_back('E');
+			break;
+		case 6:
+			scramble_copy.push_back('F');
+			break;
+		case 7:
+			scramble_copy.push_back('G');
+			break;
+		case 8:
+			scramble_copy.push_back('H');
+			break;
+		case 9:
+			scramble_copy.push_back('I');
+			break;
+		case 10:
+			scramble_copy.push_back('J');
+			break;
+		case 11:
+			scramble_copy.push_back('K');
+			break;
+		case 12:
+			scramble_copy.push_back('L');
+			break;
+		case 13:
+			scramble_copy.push_back('M');
+			break;
+		case 14:
+			scramble_copy.push_back('N');
+			break;
+		case 15:
+			scramble_copy.push_back('O');
+			break;
+		case 16:
+			scramble_copy.push_back('P');
+			break;
+		case 17:
+			scramble_copy.push_back('Q');
+			break;
+		case 18:
+			scramble_copy.push_back('R');
+			break;
+		case 19:
+			scramble_copy.push_back('S');
+			break;
+		case 20:
+			scramble_copy.push_back('T');
+			break;
+		case 21:
+			scramble_copy.push_back('U');
+			break;
+		case 22:
+			scramble_copy.push_back('V');
+			break;
+		case 23:
+			scramble_copy.push_back('W');
+			break;
+		case 24:
+			scramble_copy.push_back('X');
+			break;
+		case 25:
+			scramble_copy.push_back('Y');
+			break;
+		case 26:
+			scramble_copy.push_back('Z');
+			break;
+		}
+	}
+	
+	//generate scramble vector, using rand1 & scramble_copy as reference
+	for (int x = 0; x != rand1.size(); x++) {
+		int tem = rand1.at(x);
+		switch (tem) {
+			case 1:
+				scramble.push_back(scramble_copy.at(0));
+				break;
+			case 2:
+				scramble.push_back(scramble_copy.at(1));
+				break;
+			case 3:
+				scramble.push_back(scramble_copy.at(2));
+				break;
+			case 4:
+				scramble.push_back(scramble_copy.at(3));
+				break;
+			case 5:
+				scramble.push_back(scramble_copy.at(4));
+				break;
+			case 6:
+				scramble.push_back(scramble_copy.at(5));
+				break;
+			case 7:
+				scramble.push_back(scramble_copy.at(6));
+				break;
+			case 8:
+				scramble.push_back(scramble_copy.at(7));
+				break;
+			case 9:
+				scramble.push_back(scramble_copy.at(8));
+				break;
+			case 10:
+				scramble.push_back(scramble_copy.at(9));
+				break;
+			case 11:
+				scramble.push_back(scramble_copy.at(10));
+				break;
+			case 12:
+				scramble.push_back(scramble_copy.at(11));
+				break;
+			case 13:
+				scramble.push_back(scramble_copy.at(12));
+				break;
+			case 14:
+				scramble.push_back(scramble_copy.at(13));
+				break;
+			case 15:
+				scramble.push_back(scramble_copy.at(14));
+				break;
+			case 16:
+				scramble.push_back(scramble_copy.at(15));
+				break;
+			case 17:
+				scramble.push_back(scramble_copy.at(16));
+				break;
+			case 18:
+				scramble.push_back(scramble_copy.at(17));
+				break;
+			case 19:
+				scramble.push_back(scramble_copy.at(18));
+				break;
+			case 20:
+				scramble.push_back(scramble_copy.at(19));
+				break;
+			case 21:
+				scramble.push_back(scramble_copy.at(20));
+				break;
+			case 22:
+				scramble.push_back(scramble_copy.at(21));
+				break;
+			case 23:
+				scramble.push_back(scramble_copy.at(22));
+				break;
+			case 24:
+				scramble.push_back(scramble_copy.at(23));
+				break;
+			case 25:
+				scramble.push_back(scramble_copy.at(24));
+				break;
+			case 26:
+				scramble.push_back(scramble_copy.at(25));
+				break;
+			}
+		}
+	
+	//add key to finvec_copy vector
+	for (int x = 0; x != key_char.size(); x++) {
+		finvec_copy.push_back(key_char.at(x));
+		}
+	
+	//fill rest of finvec_copy vector with values from scramble vector
+	for (int x = 0; x != scramble.size(); x++) {
+		char teh = scramble.at(x);
+		for (int a = 0; a != finvec_copy.size(); a++) {
+			//repetition found
+			if (finvec_copy.at(a) == teh) {
+				//leave loop
+				goto label0;
+				}
+			}
+		finvec_copy.push_back(teh);
+		label0:
+			int q;	//begin next iteration of parent for loop
+		}
+	
+	//generate finvec vector using rand1 & finven_copy as reference 
+	for (int x = 0; x != rand1.size(); x++) {
+		int thm = rand1.at(x);
+		switch (thm) {
+		case 1:
+			finvec.push_back(finvec_copy.at(0));
+			break;
+		case 2:
+			finvec.push_back(finvec_copy.at(1));
+			break;
+		case 3:
+			finvec.push_back(finvec_copy.at(2));
+			break;
+		case 4:
+			finvec.push_back(finvec_copy.at(3));
+			break;
+		case 5:
+			finvec.push_back(finvec_copy.at(4));
+			break;
+		case 6:
+			finvec.push_back(finvec_copy.at(5));
+			break;
+		case 7:
+			finvec.push_back(finvec_copy.at(6));
+			break;
+		case 8:
+			finvec.push_back(finvec_copy.at(7));
+			break;
+		case 9:
+			finvec.push_back(finvec_copy.at(8));
+			break;
+		case 10:
+			finvec.push_back(finvec_copy.at(9));
+			break;
+		case 11:
+			finvec.push_back(finvec_copy.at(10));
+			break;
+		case 12:
+			finvec.push_back(finvec_copy.at(11));
+			break;
+		case 13:
+			finvec.push_back(finvec_copy.at(12));
+			break;
+		case 14:
+			finvec.push_back(finvec_copy.at(13));
+			break;
+		case 15:
+			finvec.push_back(finvec_copy.at(14));
+			break;
+		case 16:
+			finvec.push_back(finvec_copy.at(15));
+			break;
+		case 17:
+			finvec.push_back(finvec_copy.at(16));
+			break;
+		case 18:
+			finvec.push_back(finvec_copy.at(17));
+			break;
+		case 19:
+			finvec.push_back(finvec_copy.at(18));
+			break;
+		case 20:
+			finvec.push_back(finvec_copy.at(19));
+			break;
+		case 21:
+			finvec.push_back(finvec_copy.at(20));
+			break;
+		case 22:
+			finvec.push_back(finvec_copy.at(21));
+			break;
+		case 23:
+			finvec.push_back(finvec_copy.at(22));
+			break;
+		case 24:
+			finvec.push_back(finvec_copy.at(23));
+			break;
+		case 25:
+			finvec.push_back(finvec_copy.at(24));
+			break;
+		case 26:
+			finvec.push_back(finvec_copy.at(25));
+			break;
+		}
+		}
+		
+	//expand finvec vector before translation
+	finvec.push_back('#');
+	finvec.push_back('/');
+	finvec.push_back('}');
+	finvec.push_back('%');
+	finvec.push_back('^');
+	finvec.push_back('<');
+	finvec.push_back('@');
+	finvec.push_back('~');
+	finvec.push_back('*');	//finvec.at(34)
+
+	//print finvec
+	cout << "Scramble: ";
+	for (int x = 0; x != scramble.size(); x++) {
+		cout << scramble.at(x) << ", ";
+		}
+	cout << endl;
+	}
+void encode(vector<char> &finvec, vector<char> &input, vector<char> &output) {
+	//cout << "Newline: " << (int)'\n';
+
+	//cycle thorugh input vector
+	for (int x = 0; x != input.size(); x++) {
+		char yup = input.at(x);
+		if (yup == 'A') {
+			output.push_back(finvec.at(0));
+			}
+		else if (yup == 'B') {
+			output.push_back(finvec.at(1));
+			}
+		else if (yup == 'C') {
+			output.push_back(finvec.at(2));
+		}
+		else if (yup == 'D') {
+			output.push_back(finvec.at(3));
+		}
+		else if (yup == 'E') {
+			output.push_back(finvec.at(4));
+		}
+		else if (yup == 'F') {
+			output.push_back(finvec.at(6));
+		}
+		else if (yup == 'H') {
+			output.push_back(finvec.at(7));
+		}
+		else if (yup == 'I') {
+			output.push_back(finvec.at(8));
+		}
+		else if (yup == 'J') {
+			output.push_back(finvec.at(9));
+		}
+		else if (yup == 'K') {
+			output.push_back(finvec.at(10));
+		}
+		else if (yup == 'L') {
+			output.push_back(finvec.at(11));
+		}
+		else if (yup == 'M'){
+			output.push_back(finvec.at(12));
+		}
+		else if (yup == 'N') {
+			output.push_back(finvec.at(13));
+		}
+		else if (yup == 'O') {
+			output.push_back(finvec.at(14));
+		}
+		else if (yup == 'P') {
+			output.push_back(finvec.at(15));
+		}
+		else if (yup == 'Q') {
+			output.push_back(finvec.at(16));
+		}
+		else if (yup == 'R') {
+			output.push_back(finvec.at(17));
+		}
+		else if (yup == 'S') {
+			output.push_back(finvec.at(18));
+		}
+		else if (yup == 'T') {
+			output.push_back(finvec.at(19));
+		}
+		else if (yup == 'U') {
+			output.push_back(finvec.at(20));
+		}
+		else if (yup == 'V') {
+			output.push_back(finvec.at(21));
+		}
+		else if (yup == 'W') {
+			output.push_back(finvec.at(22));
+		}
+		else if (yup == 'X') {
+			output.push_back(finvec.at(23));
+		}
+		else if (yup == 'Y') {
+			output.push_back(finvec.at(24));
+		}
+		else if (yup == 'Z') {
+			output.push_back(finvec.at(25));
+		}
+		else if (yup == ' ') {
+			output.push_back(finvec.at(26));
+		}
+		else if (yup == (char) 39) {		//apostraphe
+			output.push_back(finvec.at(28));
+		}	
+		else if (yup == (char) 10) {		//   '\n'
+			output.push_back(finvec.at(29));
+			}
+		else if (yup == (char) 11) {		//tab
+			output.push_back(finvec.at(30));
+		}
+		else if (yup == '.') {		
+			output.push_back(finvec.at(31));
+		}
+		else if (yup == '!') {	
+			output.push_back(finvec.at(32));
+		}
+		else if (yup == '?') {
+			output.push_back(finvec.at(33));
+		}
+		else if (yup == (char) 34) {		//quotation
+			output.push_back(finvec.at(34));
+		}
+		}
+}
+bool is_number(const std::string& s)
+	{
+		std::string::const_iterator it = s.begin();
+		while (it != s.end() && std::isdigit(*it)) ++it;
+		return !s.empty() && it == s.end();
+	}
+void decode(vector<char> &finvec2, vector<char> &finvec2_copy, vector<char> key2_char, vector<char> dict, vector<int> &rand2) {
+	//add key to finvec2_copy vector
+	for (int x = 0; x != key2_char.size(); x++) {
+		finvec2_copy.push_back(key2_char.at(x));
+		}
+
+	//fill rest of finvec2_copy vector with values from dict vector
+	for (int x = 0; x != dict.size(); x++) {
+		char tehe = dict.at(x);
+		for (int a = 0; a != finvec2_copy.size(); a++) {
+			//repetition found
+			if (finvec2_copy.at(a) == tehe) {
+				//leave loop
+				goto label1;
+				}
+			}
+		finvec2_copy.push_back(tehe);
+		label1:
+			int qw;	//begin next iteration of parent for loop
+		}
+
+	//generate finvec2 vector using rand2 & finven2_copy as reference 
+	for (int x = 0; x != rand2.size(); x++) {
+		int thme = rand2.at(x);
+		switch (thme) {
+		case 1:
+			finvec2.push_back(finvec2_copy.at(0));
+			break;
+		case 2:
+			finvec2.push_back(finvec2_copy.at(1));
+			break;
+		case 3:
+			finvec2.push_back(finvec2_copy.at(2));
+			break;
+		case 4:
+			finvec2.push_back(finvec2_copy.at(3));
+			break;
+		case 5:
+			finvec2.push_back(finvec2_copy.at(4));
+			break;
+		case 6:
+			finvec2.push_back(finvec2_copy.at(5));
+			break;
+		case 7:
+			finvec2.push_back(finvec2_copy.at(6));
+			break;
+		case 8:
+			finvec2.push_back(finvec2_copy.at(7));
+			break;
+		case 9:
+			finvec2.push_back(finvec2_copy.at(8));
+			break;
+		case 10:
+			finvec2.push_back(finvec2_copy.at(9));
+			break;
+		case 11:
+			finvec2.push_back(finvec2_copy.at(10));
+			break;
+		case 12:
+			finvec2.push_back(finvec2_copy.at(11));
+			break;
+		case 13:
+			finvec2.push_back(finvec2_copy.at(12));
+			break;
+		case 14:
+			finvec2.push_back(finvec2_copy.at(13));
+			break;
+		case 15:
+			finvec2.push_back(finvec2_copy.at(14));
+			break;
+		case 16:
+			finvec2.push_back(finvec2_copy.at(15));
+			break;
+		case 17:
+			finvec2.push_back(finvec2_copy.at(16));
+			break;
+		case 18:
+			finvec2.push_back(finvec2_copy.at(17));
+			break;
+		case 19:
+			finvec2.push_back(finvec2_copy.at(18));
+			break;
+		case 20:
+			finvec2.push_back(finvec2_copy.at(19));
+			break;
+		case 21:
+			finvec2.push_back(finvec2_copy.at(20));
+			break;
+		case 22:
+			finvec2.push_back(finvec2_copy.at(21));
+			break;
+		case 23:
+			finvec2.push_back(finvec2_copy.at(22));
+			break;
+		case 24:
+			finvec2.push_back(finvec2_copy.at(23));
+			break;
+		case 25:
+			finvec2.push_back(finvec2_copy.at(24));
+			break;
+		case 26:
+			finvec2.push_back(finvec2_copy.at(25));
+			break;
+		}
+		}
+
+	//expand finvec2 vector before translation
+	finvec2.push_back('#');
+	finvec2.push_back('/');
+	finvec2.push_back('}');
+	finvec2.push_back('%');
+	finvec2.push_back('^');
+	finvec2.push_back('<');
+	finvec2.push_back('@');
+	finvec2.push_back('~');
+	finvec2.push_back('*');	//finvec2.at(34)
+	}
+int main() {
+
+	//Initialize variables
+	string key;
+	bool valid_key = false;
+	bool repeat = false;
+	vector<char> key_char;
+	ifstream input_file;
+	ofstream output_file;
+	vector<char> input_chars;
+	vector<char> output_chars;
+	vector<char> Beta;
+	vector<char> scramble;
+	vector<char> finvec;
+	vector<char> finvec_copy;
+
+	//Initialize base alphabet
+	vector<char> Alpha;
+	Alpha_Fill(Alpha);
+
+	//select program navigation
+	rlabel: {
+		string ctrl = "";
+		cout << "1. Decode" << endl << "2. Encode" << endl << "--------------" << endl << "Enter Selection: ";
+		cin >> ctrl;
+		//check if entry is a number
+		if (is_number(ctrl) == 0) {
+			cout << "Not an option" << endl << endl;
+			goto rlabel;
+			}
+		//check if entry is one of the available options
+		else {
+			if (ctrl == "1") {
+				goto dlabel;
+				}
+			else if (ctrl == "2") {
+				goto elabel;
+				}
+			else if (ctrl == "3") {
+				//master key for system diagnostics
+				}
+			else {
+				cout << "Not an option." << endl << endl;
+				goto rlabel;
+				}
+			}
+		}
+
+	//begin encryption process
+	elabel: {
+		//check validity of key
+		while (valid_key == false) {
+		label2:
+			key_char.clear();
+			bool repeat = false;
+			bool shorty = false;
+			cout << endl << "Key: ";
+			cin >> key;
+
+			//check length
+			if (key.length() <= 3) {
+				cout << "Key must consist of at least 3 characters. Please try again..." << endl << endl;
+				goto label2;
+				}
+
+			//Extract letters from key, store in key_char vector
+			key_char.push_back('Z');
+
+			//check for repeating letters
+			for (int x = 0; x < key.length(); x++) {
+				//repetition found
+				char te = toupper(key[x]);
+				for (int y = 0; y < key.length(); y++) {
+					if (key_char.at(x) == te) {
+						cout << "Error! Key may not repeat letters. Please try again..." << endl << endl;
+						goto label2;
+						}
+					}
+				key_char.push_back(te);
+				}
+
+			valid_key = true;
+			}
+		cout << "Key processed." << endl << endl;
+
+		//Create scrambled alphabet index	
+		int decode_key = 0;
+		generate_code(key_char, scramble, finvec, decode_key, Alpha);
+
+		//Access original message
+		char temp;
+		input_file.open("Original.txt");		//open input file
+		while (input_file.get(temp)) {		//read in characters from input file, store in input_chars vector
+			input_chars.push_back(toupper(temp));
+			}
+		input_file.close();
+
+		//Create encoded message
+		encode(finvec, input_chars, output_chars);
+		output_file.open("Encoded.txt");
+
+		//write encoded message to file
+		for (int x = 0; x != output_chars.size(); x++) {
+			output_file << output_chars.at(x);
+			}
+		output_file.close();
+
+		//Wrap up execution
+		cout << "Encoded Message: ";
+		for (int x = 0; x != output_chars.size(); x++) {
+			cout << output_chars.at(x);
+			}
+		cout << endl << "Encryption Key: " << key;
+		cout << endl << "Decode Key: " << decode_key << endl;
+		cout << endl << "Message written to file." << endl;
+		goto exit;
+	}
+
+	//begin decryption process
+	dlabel: {
+		//Initialize variables
+		vector<char> dict;
+		vector<int> rand2;
+		vector<char> key2_char;
+		vector<char> finvec2_copy;
+		vector<char> finvec2;
+		bool yify = false;
+		int combo = 0;
+		string key2 = "";
+
+		cout << "Enter decode key: ";
+		cin >> combo;
+
+		//determine dict and rand 2 vectors based on decode key
+		switch (combo) {
+			case 1:
+				dict = { 'N', 'P', 'Y', 'C', 'O', 'D', 'U', 'S', 'I', 'Z',
+						'G', 'H', 'E', 'K', 'J', 'W', 'V', 'A', 'R', 'F',
+						'L', 'B', 'Q', 'X', 'T', 'M' };
+				rand2 = { 12, 20, 22, 17, 26, 23, 18, 11, 24, 5,
+						19, 14, 10, 8, 13, 6, 3, 21, 7, 16,
+						1, 25, 4, 9, 2, 15 };
+				break;
+			case 2:
+				dict = {};
+				break;
+			case 3:
+				dict = {};
+				break;
+			case 4:
+				dict = {};
+				break;
+			case 5:
+				dict = {};
+				break;
+			}
+
+		//check validity of key2
+		while (yify == false) {
+			label3:
+				key_char.clear();
+				bool repeat = false;
+				bool shorty = false;
+				cout << "Enter encryption key: ";
+				cin >> key2;
+
+				//check length
+				if (key2.length() <= 3) {
+					cout << "Key must consist of at least 3 characters. Please try again..." << endl << endl;
+					goto label3;
+					}
+
+				//Extract letters from key, store in key2_char vector
+				key2_char.push_back('Z');
+
+				//check for repeating letters
+				for (int x = 0; x < key2.length(); x++) {
+
+					//repetition found
+					char te2 = toupper(key2[x]);
+					for (int y = 0; y < key2.length(); y++) {
+						if (key2_char.at(x) == te2) {
+							cout << "Error! Key may not repeat letters. Please try again..." << endl << endl;
+							goto label3;
+							}
+						}
+
+					//no duplicate
+					key2_char.push_back(te2);
+					}
+
+				yify = true;
+				}
+
+		//recreate encoding process used on original message
+		decode(finvec2, finvec2_copy, key2_char, dict, rand2);
+		
+		//Access encoded message, store in input_chars
+		char tempe;
+		input_file.open("Encoded.txt");		//open input file
+		while (input_file.get(tempe)) {	//read in characters from input file, store in input_chars vector
+			input_chars.push_back(toupper(tempe));
+			}
+		input_file.close();
+		
+		//fill output_chars vector (translate from input_chars vector)
+		for (int x = 0; x != input_chars.size(); x++) {
+			char yupe = input_chars.at(x);
+			if (yupe == 'A') {
+				output_chars.push_back(finvec2.at(0));
+				}
+			else if (yupe == 'B') {
+				output_chars.push_back(finvec2.at(1));
+				}
+			else if (yupe == 'C') {
+				output_chars.push_back(finvec2.at(2));
+				}
+			else if (yupe == 'D') {
+				output_chars.push_back(finvec2.at(3));
+				}
+			else if (yupe == 'E') {
+				output_chars.push_back(finvec2.at(4));
+				}
+			else if (yupe == 'F') {
+				output_chars.push_back(finvec2.at(6));
+				}
+			else if (yupe == 'H') {
+				output_chars.push_back(finvec2.at(7));
+				}
+			else if (yupe == 'I') {
+				output_chars.push_back(finvec2.at(8));
+				}
+			else if (yupe == 'J') {
+				output_chars.push_back(finvec2.at(9));
+				}
+			else if (yupe == 'K') {
+				output_chars.push_back(finvec2.at(10));
+				}
+			else if (yupe == 'L') {
+				output_chars.push_back(finvec2.at(11));
+				}
+			else if (yupe == 'M') {
+				output_chars.push_back(finvec2.at(12));
+				}
+			else if (yupe == 'N') {
+				output_chars.push_back(finvec2.at(13));
+				}
+			else if (yupe == 'O') {
+				output_chars.push_back(finvec2.at(14));
+				}
+			else if (yupe == 'P') {
+				output_chars.push_back(finvec2.at(15));
+				}
+			else if (yupe == 'Q') {
+				output_chars.push_back(finvec2.at(16));
+				}
+			else if (yupe == 'R') {
+				output_chars.push_back(finvec2.at(17));
+				}
+			else if (yupe == 'S') {
+				output_chars.push_back(finvec2.at(18));
+				}
+			else if (yupe == 'T') {
+				output_chars.push_back(finvec2.at(19));
+				}
+			else if (yupe == 'U') {
+				output_chars.push_back(finvec2.at(20));
+				}
+			else if (yupe == 'V') {
+				output_chars.push_back(finvec2.at(21));
+				}
+			else if (yupe == 'W') {
+				output_chars.push_back(finvec2.at(22));
+				}
+			else if (yupe == 'X') {
+				output_chars.push_back(finvec2.at(23));
+				}
+			else if (yupe == 'Y') {
+				output_chars.push_back(finvec2.at(24));
+				}
+			else if (yupe == 'Z') {
+				output_chars.push_back(finvec2.at(25));
+				}
+			else if (yupe == ' ') {
+				output_chars.push_back(finvec2.at(26));
+				}
+			else if (yupe == (char)39) {		//apostraphe
+				output_chars.push_back(finvec2.at(28));
+				}
+			else if (yupe == (char)10) {		//   '\n'
+				output_chars.push_back(finvec2.at(29));
+				}
+			else if (yupe == (char)11) {		//tab
+				output_chars.push_back(finvec2.at(30));
+				}
+			else if (yupe == '.') {
+				output_chars.push_back(finvec2.at(31));
+				}
+			else if (yupe == '!') {
+				output_chars.push_back(finvec2.at(32));
+				}
+			else if (yupe == '?') {
+				output_chars.push_back(finvec2.at(33));
+				}
+			else if (yupe == (char)34) {		//quotation
+				output_chars.push_back(finvec2.at(34));
+				}
+		}
+
+		//write decoded message to file
+		output_file.open("Decoded.txt");	//open output file
+		for (int x = 0; x != output_chars.size(); x++) {
+			output_file << output_chars.at(x);
+			}
+		output_file.close();
+
+		//Wrap up execution
+		cout << "Decoded Message: ";
+		for (int x = 0; x != output_chars.size(); x++) {
+			cout << output_chars.at(x);
+			}
+		cout << endl << "Message written to file." << endl;
+		goto exit;
+		}
+
+	//Finish Program execution
+	exit: {
+		system("pause");
+		return 0;
+		}
+	}
