@@ -1,0 +1,104 @@
+#include <iostream>
+#include "ItemType.h"	//specification file
+using namespace std;
+
+class UnSorted_Type {	//declares a class data type
+private:
+	NodeType* listData;
+	int length;
+	NodeType* currentPos;
+public:						//8 public member functions
+	UnSorted_Type();
+	void MakeEmpty();
+	bool IsFull();
+	int GetLength();		//returns length of list
+	void RetrieveItem(ItemType& item, bool& found);
+	void InsertItem(ItemType item);
+	void DeleteItem(ItemType item);
+	void ResetList();
+	void GetNextItem(ItemType& item);
+};
+int UnSorted_Type::GetLength() {
+	return length;
+};
+UnSorted_Type::UnSorted_Type() {
+	length = 0;
+}
+bool UnSorted_Type::IsFull() {
+	NodeType* location;
+	try
+	{
+		location = new NodeType;
+		delete location;
+		return false;
+	}
+	catch (std::bad_alloc exception)
+	{
+		return true;
+	}
+}
+void UnSorted_Type::MakeEmpty() {
+	NodeType* tempPtr;
+	while (listData != NULL)
+	{
+		tempPtr = listData;
+		int* next = *NodeType::GetNext();
+		listData = listData->next;
+		delete tempPtr;
+	}
+	length = 0;
+}
+void UnSorted_Type::RetrieveItem(ItemType& item, bool& found) {
+	bool moreToSearch;
+	NodeType* location;
+	location = listData;
+	found = false;
+	moreToSearch = (location != NULL);
+	while (moreToSearch && !found){
+		if (item == location -> info) {		//match here
+			found = true;
+			item = location->info;
+		}
+		else {								//advance pointer
+			location = location->next;
+			moreToSearch = ( location != NULL);
+		}
+	}
+}
+void UnSorted_Type::InsertItem(ItemType item) {
+	//Pre: list is not full and item is not in list
+	//Post: item is in the list; length has been incremented
+	NodeType* location;
+		//obtain and fill a node
+	location = new NodeType<ItemType>;
+	location->info = item;
+	location->next - listData;
+	listData = location;
+	length++;
+}
+void UnSorted_Type::DeleteItem(ItemType item) {
+	NodeType* tempLocation;
+	NodeType* location;
+	
+	location = listData;
+
+	//Find the item
+	if (item.ComparedTo((location->next)->info) == EQUAL) {
+		location = location->next;
+		tempLocation = location->next;
+		location->next = (location->next)->next;
+	}
+	delete tempLocation;
+	location--;
+}
+void UnSorted_Type::ResetList() {
+	currentPos = NULL;
+};
+void UnSorted_Type::GetNextItem(ItemType& item) {
+	if (currentPos =NULL){
+		currentPos=listData;
+	}
+	else {
+		currentPos = currentPos->info;
+	}
+};
